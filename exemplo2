@@ -1,0 +1,55 @@
+☣️ Cybersecurity Lab: Simulando Malwares com Python
+1. Introdução Teórica
+Este projeto tem como objetivo o estudo prático de duas das ameaças mais comuns no cenário de segurança atual: Ransomware e Keylogger. O foco é entender o ciclo de vida dessas ameaças para aprimorar estratégias de detecção e resposta a incidentes.
+
+Aviso Legal: Este código e documentação foram desenvolvidos estritamente para fins educacionais em ambientes controlados. O uso dessas técnicas para atividades maliciosas é ilegal e antiético.
+
+2. Ransomware: O Sequestro de Dados
+O Ransomware é um malware que utiliza criptografia para impedir que o usuário acesse seus próprios arquivos, exigindo um resgate (geralmente em criptomoedas) para a chave de descriptografia.
+
+Arquitetura do Ataque
+Biblioteca Utilizada: cryptography (módulo Fernet).
+
+Funcionamento: O script gera uma chave simétrica, percorre diretórios específicos e criptografa arquivos de teste (.txt, .pdf, .jpg).
+
+Criptografia Simétrica (AES): É usada pela sua velocidade. A mesma chave que tranca o arquivo é a que o destranca.
+
+O "Pulo do Gato": Sem a chave armazenada localmente (ou enviada para um servidor C2 - Command and Control), os arquivos tornam-se virtualmente irrecuperáveis.
+
+3. Keylogger: A Espionagem Silenciosa
+Um Keylogger é um software projetado para monitorar e registrar cada tecla pressionada em um computador, visando capturar senhas, dados bancários e conversas.
+
+Arquitetura do Ataque
+Biblioteca Utilizada: pynput.keyboard.
+
+Funcionamento: O script cria um listener (ouvinte) que intercepta eventos do teclado em segundo plano.
+
+Exfiltração de Dados:
+
+Persistência: Os dados são salvos em um arquivo oculto (.txt).
+
+Envio: Utiliza-se a biblioteca smtplib (protocolo SMTP) para enviar o conteúdo do log para um e-mail controlado pelo atacante em intervalos regulares.
+
+4. Estratégias de Defesa e Mitigação
+A parte mais importante deste desafio é saber como nos proteger:
+
+Contra Ransomware:
+Backup Offline (3-2-1): Ter cópias de segurança que não estejam conectadas à rede principal.
+
+Proteção de Endpoint (EDR): Ferramentas que detectam padrões anômalos de criptografia em massa.
+
+Controle de Permissões: O usuário comum não deve ter permissão de escrita em pastas críticas do sistema.
+
+Contra Keyloggers:
+Antivírus/Antimalware: Detecção baseada em assinaturas e comportamento (heurística).
+
+Teclados Virtuais: Úteis para inserir senhas sensíveis, pois ignoram os eventos de hardware do teclado físico.
+
+MFA (Autenticação de Dois Fatores): Mesmo que a senha seja capturada, o atacante não terá o código temporário do celular.
+
+5. Objetivos Alcançados
+Domínio de Bibliotecas Python: Uso prático de cryptography, pynput e smtplib.
+
+Entendimento de Vetores de Infecção: Compreensão de como o clique em um executável simples pode comprometer a integridade de uma estação de trabalho.
+
+Mentalidade de Defesa: Capacidade de propor camadas de segurança baseadas no comportamento do malware.
