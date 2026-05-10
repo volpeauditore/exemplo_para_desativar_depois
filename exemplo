@@ -1,0 +1,55 @@
+🛡️ Relatório Técnico: Auditoria de Segurança e Ataques de Força Bruta
+1. Introdução Teórica
+Este projeto documenta a análise de vulnerabilidades em serviços de autenticação utilizando o ecossistema Kali Linux. O foco principal é o Ataque de Força Bruta (Brute Force) e o Ataque de Dicionário, métodos que exploram a fragilidade de credenciais para obter acesso não autorizado a sistemas.
+
+O que é o Medusa?
+O Medusa é uma ferramenta de força bruta modular, rápida e paralela. Diferente de outras ferramentas, ele permite testar múltiplos usuários e hosts simultaneamente, suportando diversos protocolos (FTP, SSH, SMB, HTTP, etc.). Sua eficiência reside no processamento em paralelo, o que reduz drasticamente o tempo necessário para validar wordlists extensas.
+
+2. Cenários de Ataque: Fundamentação e Protocolos
+Nesta simulação, exploramos três vetores distintos de ataque para entender como diferentes serviços lidam com tentativas de login:
+
+A. Protocolo FTP (File Transfer Protocol)
+O FTP é um protocolo de transferência de arquivos que, em versões padrão, não criptografa dados.
+
+A Vulnerabilidade: Além do tráfego em texto claro, muitas implementações não possuem limites de tentativas de login (rate limiting), permitindo que o Medusa teste milhares de combinações por minuto.
+
+Conceito: Testamos o serviço na porta 21 para identificar credenciais de administração.
+
+B. Protocolo SMB (Server Message Block)
+O SMB é utilizado para compartilhamento de arquivos e impressoras em redes locais.
+
+A Vulnerabilidade: Em ambientes mal configurados, é possível realizar a Enumeração de Usuários. Uma vez que os nomes de usuários são conhecidos, o ataque de força bruta torna-se 50% mais simples, pois resta apenas descobrir a senha.
+
+Conceito: Simulação de acesso a diretórios de rede protegidos.
+
+C. Web Authentication (DVWA)
+Diferente dos protocolos de rede, a autenticação web ocorre na camada de aplicação.
+
+A Vulnerabilidade: Formulários que não utilizam CAPTCHA ou tokens de CSRF robustos podem ser automatizados. O Medusa é configurado para identificar padrões de "Login Falhou" no código HTML para saber quando uma tentativa foi bem-sucedida.
+
+3. Metodologia de Execução (Visão Geral)
+A execução baseia-se no ciclo de vida de um Teste de Invasão (Pentest):
+
+Reconhecimento: Identificação de portas abertas (Ex: Portas 21, 139, 445 e 80).
+
+Enumeração: Descoberta de serviços e possíveis nomes de usuários.
+
+Exploração: Execução do Medusa utilizando uma Wordlist (lista de palavras com senhas comuns).
+
+Análise: Verificação da eficácia do ataque e logs gerados.
+
+4. Medidas de Mitigação e Defesa
+A parte mais crítica de uma auditoria é a proposta de solução. Para neutralizar ataques como os realizados pelo Medusa, as seguintes estratégias são fundamentais:
+
+Políticas de Bloqueio (Account Lockout): Bloquear a conta após 3 ou 5 tentativas falhas.
+
+Implementação de 2FA/MFA: Adicionar uma camada de segurança que a força bruta não consegue ultrapassar apenas com texto.
+
+Rate Limiting e Delay: Introduzir atrasos artificiais entre tentativas de login para inviabilizar o tempo de execução de ferramentas automatizadas.
+
+Criptografia de Canal: Substituir FTP por SFTP e utilizar HTTPS para proteger as credenciais em trânsito.
+
+Monitoramento e IDS: Utilizar sistemas que detectam o padrão de "tentativa e erro" e banem o IP do atacante automaticamente (Ex: Fail2Ban).
+
+5. Conclusão
+A realização deste desafio permitiu entender que a segurança de um sistema não depende apenas da robustez do firewall, mas da política de gerenciamento de identidades e acessos. Ferramentas como o Medusa são essenciais para que administradores de sistemas possam auditar suas próprias redes antes que agentes maliciosos o façam.
